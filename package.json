@@ -1,0 +1,36 @@
+{
+  "name": "gleipnir",
+  "version": "0.0.1",
+  "description": "Convenience wrapper for node amqplib",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rexxars/gleipnir.git"
+  },
+  "keywords": [
+    "amqp",
+    "queue",
+    "rabbitmq",
+    "wrapper"
+  ],
+  "author": "Espen Hovlandsdal <espen@hovlandsdal.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rexxars/gleipnir/issues"
+  },
+  "homepage": "https://github.com/rexxars/gleipnir#readme",
+  "dependencies": {
+    "amqplib": "^0.4.0",
+    "lodash.merge": "^3.3.2",
+    "lodash.once": "^3.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^1.8.0",
+    "eslint-config-vaffel": "^3.0.0",
+    "istanbul": "^0.4.0",
+    "mocha": "^2.3.3"
+  }
+}
