@@ -4,7 +4,10 @@
   "description": "Convenience wrapper for node amqplib",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha"
+    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "test": "istanbul cover _mocha",
+    "prepublish": "npm prune && npm test"
   },
   "repository": {
     "type": "git",
@@ -24,6 +27,7 @@
   "homepage": "https://github.com/rexxars/gleipnir#readme",
   "dependencies": {
     "amqplib": "^0.4.0",
+    "gleipnir-assert": "1.0.0",
     "lodash.merge": "^3.3.2",
     "lodash.once": "^3.0.1"
   },
@@ -31,6 +35,8 @@
     "eslint": "^1.8.0",
     "eslint-config-vaffel": "^3.0.0",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.3"
+    "mocha": "^2.3.3",
+    "proxyquire": "^1.7.3",
+    "sinon": "^1.17.2"
   }
 }

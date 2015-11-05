@@ -1,9 +1,11 @@
 'use strict';
 
 var url = require('url');
+var util = require('util');
 var amqp = require('amqplib/callback_api');
 var merge = require('lodash.merge');
 var runOnce = require('lodash.once');
+var assert = require('gleipnir-assert');
 
 var assertUrl = require('./util/assert-url');
 var assertLogger = require('./util/assert-logger');
@@ -29,8 +31,13 @@ function Gleipnir(opts, callback) {
     options.url = assertUrl(options.url);
     options.log = assertLogger(options.log);
 
+    // Listeners
+    var listeners = {
+        ready: []
+    };
+
     // Instance variables
-    var connection, channel;
+    var connection, channel, isReady = false;
 
     // Connection state
     var state = resetConnectionState({});
@@ -42,7 +49,8 @@ function Gleipnir(opts, callback) {
     return {
         connect: connect,
         close: close,
-        isConnected: isConnected
+        isConnected: isConnected,
+        addReadyListener: addReadyListener
     };
 
     function connect() {
@@ -85,6 +93,7 @@ function Gleipnir(opts, callback) {
         options.log.error('Failed to create channel (%s)', err.message);
 
         close();
+        callback(err);
     }
 
     function onConnectFailure(err) {
@@ -93,14 +102,17 @@ function Gleipnir(opts, callback) {
         if (state.closing || state.closed) {
             return;
         } else if (state.reconnectAttempts >= options.reconnect.limit) {
-            options.log.error(
-                'Failed to connect to %s after %d attempts - giving up',
+            var errMsg = util.format(
+                'Failed to connect to %s after %d attempts - giving up. Last error: %s',
                 url.format(options.url),
-                state.reconnectAttempts
+                state.reconnectAttempts,
+                err.message
             );
 
+            options.log.error(errMsg);
+
             close();
-            callback();
+            callback(new Error(errMsg));
             return;
         }
 
@@ -173,15 +185,37 @@ function Gleipnir(opts, callback) {
         }
 
         options.log.debug('Found items to assert, calling `gleipnir-assert`');
-        onReady();
+        assert(channel, options.assert, onReady);
     }
 
-    function onReady() {
+    function onReady(err) {
+        if (err) {
+            return callback(err);
+        }
+
+        isReady = true;
+
+        while (listeners.ready.length) {
+            var listener = listeners.ready.shift();
+            listener(channel, connection);
+        }
+
         callback(null, channel, connection);
     }
 
+    function addReadyListener(listener) {
+        // Are we already in ready state?
+        if (isReady) {
+            return process.nextTick(function() {
+                listener(channel, connection);
+            });
+        }
+
+        listeners.ready.push(listener);
+    }
+
     function isConnected() {
-        return this.state.connected;
+        return state.connected;
     }
 }
 
