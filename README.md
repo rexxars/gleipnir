@@ -1,3 +1,5 @@
+[![npm version](http://img.shields.io/npm/v/gleipnir.svg?style=flat-square)](http://browsenpm.org/package/gleipnir)[![Build Status](http://img.shields.io/travis/rexxars/gleipnir/master.svg?style=flat-square)](https://travis-ci.org/rexxars/gleipnir)[![Coverage Status](http://img.shields.io/codeclimate/coverage/github/rexxars/gleipnir.svg?style=flat-square)](https://codeclimate.com/github/rexxars/gleipnir)[![Code Climate](http://img.shields.io/codeclimate/github/rexxars/gleipnir.svg?style=flat-square)](https://codeclimate.com/github/rexxars/gleipnir/)
+
 # gleipnir
 
 Convenience wrapper for [amqp.node](https://github.com/squaremo/amqp.node).
