@@ -188,19 +188,21 @@ function Gleipnir(opts, callback) {
         assert(channel, options.assert, onReady);
     }
 
-    function onReady(err) {
+    function onReady(err, queueNames) {
         if (err) {
+            options.log.error('Error encountered during initialization: %s', err.message);
             return callback(err);
         }
 
         isReady = true;
+        options.log.debug('Channel ready, triggering listeners');
 
         while (listeners.ready.length) {
             var listener = listeners.ready.shift();
-            listener(channel, connection);
+            listener(channel, connection, queueNames);
         }
 
-        callback(null, channel, connection);
+        callback(null, channel, connection, queueNames);
     }
 
     function addReadyListener(listener) {

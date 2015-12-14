@@ -132,6 +132,34 @@ describe(pkg.name, function() {
         }
     });
 
+    it('calls ready listeners with queue names', function(done) {
+        assertStub = sinon.stub().yieldsAsync(null, ['generated', 'foo']);
+        var gleip = getGleipnir(connectionStubs, channelStubs, connectStub)({
+            assert: {
+                queues: [{ binding: { exchange: 'ex' } }, 'foo']
+            }
+        });
+        gleip.addReadyListener(function(chan, conn, queues) {
+            assert.equal(queues[0], 'generated');
+            assert.equal(queues[1], 'foo');
+            done();
+        });
+    });
+
+    it('calls callback with queue names', function(done) {
+        assertStub = sinon.stub().yieldsAsync(null, ['generated', 'foo']);
+        getGleipnir(connectionStubs, channelStubs, connectStub)({
+            assert: {
+                queues: [{ binding: { exchange: 'ex' } }, 'foo']
+            }
+        }, function(err, chan, conn, queues) {
+            assert.ifError(err);
+            assert.equal(queues[0], 'generated');
+            assert.equal(queues[1], 'foo');
+            done();
+        });
+    });
+
     it('can be queried for connection status', function(done) {
         var gleip = getGleipnir()(function() {
             assert.equal(true, gleip.isConnected());

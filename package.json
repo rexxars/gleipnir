@@ -4,7 +4,7 @@
   "description": "Convenience wrapper for node amqplib",
   "main": "src/index.js",
   "scripts": {
-    "pretest": "npm run lint",
+    "posttest": "npm run lint",
     "lint": "eslint .",
     "test": "istanbul cover _mocha",
     "qa": "npm prune && npm test",
