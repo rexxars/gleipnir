@@ -58,7 +58,7 @@ function Gleipnir(opts, callback) {
         state.closing = false;
         state.closed = false;
 
-        options.log.debug('Attempting to connect to AMQP (%s)', options.url);
+        options.log.debug('Attempting to connect to AMQP');
         amqp.connect(options.url, options.socket, onConnect);
     }
 
