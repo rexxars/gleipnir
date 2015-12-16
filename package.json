@@ -1,6 +1,6 @@
 {
   "name": "gleipnir",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Convenience wrapper for node amqplib",
   "main": "src/index.js",
   "scripts": {
