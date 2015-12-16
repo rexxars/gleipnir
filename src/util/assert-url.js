@@ -22,6 +22,12 @@ module.exports = function assertUrl(url) {
         throw new TypeError('`options.url` must be a valid AMQP connection URL or an object of connection details');
     }
 
+    if (url.host && !url.hostname) {
+        url = merge({}, url);
+        url.hostname = url.host;
+        delete url.host;
+    }
+
     var uri = merge({
         hostname: 'localhost'
     }, url, {
