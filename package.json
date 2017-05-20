@@ -27,18 +27,18 @@
   },
   "homepage": "https://github.com/rexxars/gleipnir#readme",
   "dependencies": {
-    "amqplib": "^0.4.0",
+    "amqplib": "^0.5.1",
     "gleipnir-assert": "^1.0.1",
     "in-publish": "^2.0.0",
-    "lodash.merge": "^3.3.2",
-    "lodash.once": "^3.0.1"
+    "lodash.merge": "^4.6.0",
+    "lodash.once": "^4.1.1"
   },
   "devDependencies": {
-    "eslint": "^1.8.0",
-    "eslint-config-vaffel": "^3.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-vaffel": "^5.0.0",
     "istanbul": "^0.4.0",
-    "mocha": "^2.3.3",
+    "mocha": "^3.4.1",
     "proxyquire": "^1.7.3",
-    "sinon": "^1.17.2"
+    "sinon": "^2.2.0"
   }
 }

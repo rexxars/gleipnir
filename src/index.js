@@ -64,7 +64,8 @@ function Gleipnir(opts, callback) {
 
     function onConnect(err, conn) {
         if (err) {
-            return onConnectFailure(err);
+            onConnectFailure(err);
+            return;
         }
 
         options.log.debug('Connection to AMQP established successfully');
@@ -78,9 +79,10 @@ function Gleipnir(opts, callback) {
 
     function onChannelCreated(err, chan) {
         if (err) {
-            return onChannelCreationFailed(err);
+            onChannelCreationFailed(err);
+            return;
         } else if (state.closing) {
-            return null;
+            return;
         }
 
         options.log.debug('AMQP channel created');
@@ -191,7 +193,8 @@ function Gleipnir(opts, callback) {
     function onReady(err, queueNames) {
         if (err) {
             options.log.error('Error encountered during initialization: %s', err.message);
-            return callback(err);
+            callback(err);
+            return;
         }
 
         isReady = true;
@@ -208,9 +211,10 @@ function Gleipnir(opts, callback) {
     function addReadyListener(listener) {
         // Are we already in ready state?
         if (isReady) {
-            return process.nextTick(function() {
+            process.nextTick(function() {
                 listener(channel, connection);
             });
+            return;
         }
 
         listeners.ready.push(listener);
