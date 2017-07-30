@@ -14,8 +14,12 @@ module.exports = function assertUrl(url) {
         });
     }
 
-    if (url.pathname !== '/' && !url.vhost) {
-        url.vhost = url.pathname;
+    if (!url.vhost) {
+        if (url.pathname && url.pathname.length > 1) {
+            url.vhost = url.pathname.substr(1);
+        } else {
+            url.vhost = '/';
+        }
     }
 
     if (typeof url !== 'object') {

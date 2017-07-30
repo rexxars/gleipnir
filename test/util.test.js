@@ -10,7 +10,6 @@ var noopLogger = require('../src/util/noop-logger');
 
 var describe = mocha.describe;
 var it = mocha.it;
-var undef;
 
 describe(pkg.name + ' utils', function() {
     describe('logger asserter', function() {
@@ -43,9 +42,23 @@ describe(pkg.name + ' utils', function() {
             assert.equal(url.port, 1398);
             assert.equal(url.protocol, 'amqp');
             assert.equal(url.auth, 'guest:pass');
-            assert.equal(url.vhost, '/foo');
+            assert.equal(url.vhost, 'foo');
             assert.equal(url.username, 'guest');
             assert.equal(url.password, 'pass');
+        });
+
+        it('parses empty vhost correctly', function() {
+            var url = assertUrl('amqp://somehost');
+
+            assert.equal(url.hostname, 'somehost');
+            assert.equal(url.vhost, '/');
+        });
+
+        it('parses vhost correctly', function() {
+            var url = assertUrl('amqp://somehost/%2Ffoo%2Fbar');
+
+            assert.equal(url.hostname, 'somehost');
+            assert.equal(url.vhost, '%2Ffoo%2Fbar');
         });
 
         it('switches port based on protocol if no port explicitly given', function() {
@@ -62,11 +75,6 @@ describe(pkg.name + ' utils', function() {
             assert.throws(function() {
                 assertUrl(function() {});
             }, /must be a valid/);
-        });
-
-        it('doesn\'t set vhost if it matches default value', function() {
-            var url = assertUrl('amqp://localhost/');
-            assert.equal(url.vhost, undef);
         });
 
         it('throws if required parts of URL-string is missing', function() {
