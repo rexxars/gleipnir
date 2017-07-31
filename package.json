@@ -6,8 +6,8 @@
   "scripts": {
     "posttest": "npm run lint",
     "lint": "eslint .",
-    "test": "istanbul cover _mocha",
-    "qa": "npm prune && npm test",
+    "test": "istanbul cover ./node_modules/.bin/_mocha",
+    "qa": "npm test",
     "prepublish": "in-publish && npm run qa || not-in-publish"
   },
   "repository": {
